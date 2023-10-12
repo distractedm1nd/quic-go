@@ -244,9 +244,6 @@ func (c *oobConn) WritePacket(b []byte, addr net.Addr, packetInfoOOB []byte, gso
 			panic("GSO disabled")
 		}
 		oob = appendUDPSegmentSizeMsg(oob, gsoSize)
-		utils.DefaultLogger.Debugf("initial oob: %x , modified oob: %x", packetInfoOOB, oob)
-		utils.DefaultLogger.Debugf("packet bytes: %x", b)
-		utils.DefaultLogger.Debugf("address: %s, gsoSize: %d", addr.String(), gsoSize)
 	}
 	if ecn != protocol.ECNUnsupported {
 		if !c.capabilities().ECN {
@@ -260,6 +257,9 @@ func (c *oobConn) WritePacket(b []byte, addr net.Addr, packetInfoOOB []byte, gso
 			}
 		}
 	}
+	utils.DefaultLogger.Debugf("initial oob: %x , modified oob: %x", packetInfoOOB, oob)
+	utils.DefaultLogger.Debugf("packet bytes: %x", b)
+	utils.DefaultLogger.Debugf("address: %s, gsoSize: %d", addr.String(), gsoSize)
 	n, _, err := c.OOBCapablePacketConn.WriteMsgUDP(b, oob, addr.(*net.UDPAddr))
 	return n, err
 }
