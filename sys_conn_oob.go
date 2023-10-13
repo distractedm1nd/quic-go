@@ -5,6 +5,7 @@ package quic
 import (
 	"encoding/binary"
 	"errors"
+	"fmt"
 	"log"
 	"net"
 	"net/netip"
@@ -257,9 +258,9 @@ func (c *oobConn) WritePacket(b []byte, addr net.Addr, packetInfoOOB []byte, gso
 			}
 		}
 	}
-	utils.DefaultLogger.Debugf("initial oob: %x , modified oob: %x", packetInfoOOB, oob)
-	utils.DefaultLogger.Debugf("packet bytes: %x", b)
-	utils.DefaultLogger.Debugf("address: %s, gsoSize: %d", addr.String(), gsoSize)
+	fmt.Printf("initial oob: %x , modified oob: %x\n", packetInfoOOB, oob)
+	fmt.Printf("packet bytes: %x\n", b)
+	fmt.Printf("address: %s, gsoSize: %d\n", addr.String(), gsoSize)
 	n, _, err := c.OOBCapablePacketConn.WriteMsgUDP(b, oob, addr.(*net.UDPAddr))
 	return n, err
 }
